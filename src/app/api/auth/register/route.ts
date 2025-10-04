@@ -61,7 +61,7 @@ export async function POST(request: NextRequest) {
     const token = jwt.sign(
       { userId: user.id, email: user.email },
       process.env.JWT_SECRET || 'fallback-secret',
-      { expiresIn: process.env.JWT_EXPIRY || '7d' }
+      { expiresIn: '7d' }
     );
 
     // Set httpOnly cookie

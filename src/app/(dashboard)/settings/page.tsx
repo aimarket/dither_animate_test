@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { MissionControlCard } from '@/components/ui/MissionControlCard';
 import { TechnicalBorder } from '@/components/ui/TechnicalBorder';
-import { User, Bell, Lock, Database, Save, AlertTriangle } from 'lucide-react';
+import { Lock, Save, AlertTriangle } from 'lucide-react';
 
 export default function SettingsPage() {
   const [email, setEmail] = useState('test@example.com');
@@ -18,7 +18,7 @@ export default function SettingsPage() {
       </h1>
 
       {/* Profile Settings */}
-      <MissionControlCard title="USER PROFILE" color="cyan" icon={User}>
+      <MissionControlCard title="USER PROFILE" color="cyan">
         <div className="space-y-4">
           <div className="space-y-2">
             <label className="text-xs uppercase" style={{ color: 'var(--text-secondary)', letterSpacing: '0.1em' }}>
@@ -76,7 +76,7 @@ export default function SettingsPage() {
       </MissionControlCard>
 
       {/* Security Settings */}
-      <MissionControlCard title="SECURITY PROTOCOLS" color="orange" icon={Lock}>
+      <MissionControlCard title="SECURITY PROTOCOLS" color="orange">
         <div className="space-y-4">
           <div className="space-y-2">
             <label className="text-xs uppercase" style={{ color: 'var(--text-secondary)', letterSpacing: '0.1em' }}>
@@ -144,7 +144,7 @@ export default function SettingsPage() {
       </MissionControlCard>
 
       {/* Notifications */}
-      <MissionControlCard title="NOTIFICATION SETTINGS" color="blue" icon={Bell}>
+      <MissionControlCard title="NOTIFICATION SETTINGS" color="blue">
         <div className="space-y-4">
           <TechnicalBorder color="cyan">
             <div className="flex items-center justify-between p-4" style={{ backgroundColor: 'var(--bg-card)' }}>
@@ -202,7 +202,7 @@ export default function SettingsPage() {
       </MissionControlCard>
 
       {/* Data Management */}
-      <MissionControlCard title="DATA MANAGEMENT" color="green" icon={Database}>
+      <MissionControlCard title="DATA MANAGEMENT" color="green">
         <div className="space-y-4">
           <TechnicalBorder color="green">
             <div className="flex items-center justify-between p-4" style={{ backgroundColor: 'var(--bg-card)' }}>

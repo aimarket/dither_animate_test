@@ -69,9 +69,9 @@ export default function MotorsPage() {
       key: 'designation',
       label: 'DESIGNATION',
       sortable: true,
-      render: (value: string) => (
+      render: (value: unknown) => (
         <span style={{ color: 'var(--accent-orange)', fontWeight: 500 }}>
-          {value}
+          {String(value)}
         </span>
       ),
     },
@@ -85,13 +85,13 @@ export default function MotorsPage() {
       label: 'CLASS',
       width: '90px',
       sortable: true,
-      render: (value: string) => (
+      render: (value: unknown) => (
         <span className="px-2 py-1 rounded text-xs font-bold" style={{
           backgroundColor: 'rgba(255, 107, 0, 0.2)',
           color: 'var(--accent-orange)',
           border: '1px solid var(--accent-orange)',
         }}>
-          {value}
+          {String(value)}
         </span>
       ),
     },
@@ -101,7 +101,7 @@ export default function MotorsPage() {
       width: '110px',
       align: 'right' as const,
       sortable: true,
-      render: (value: number) => `${value.toFixed(1)} N·s`,
+      render: (value: unknown) => `${Number(value).toFixed(1)} N·s`,
     },
     {
       key: 'avg_thrust_n',
@@ -109,7 +109,7 @@ export default function MotorsPage() {
       width: '120px',
       align: 'right' as const,
       sortable: true,
-      render: (value: number) => `${value.toFixed(1)} N`,
+      render: (value: unknown) => `${Number(value).toFixed(1)} N`,
     },
     {
       key: 'max_thrust_n',
@@ -117,9 +117,9 @@ export default function MotorsPage() {
       width: '120px',
       align: 'right' as const,
       sortable: true,
-      render: (value: number) => (
+      render: (value: unknown) => (
         <span style={{ color: 'var(--accent-orange)' }}>
-          {value.toFixed(1)} N
+          {Number(value).toFixed(1)} N
         </span>
       ),
     },
@@ -129,7 +129,7 @@ export default function MotorsPage() {
       width: '110px',
       align: 'right' as const,
       sortable: true,
-      render: (value: number) => `${value.toFixed(2)} s`,
+      render: (value: unknown) => `${Number(value).toFixed(2)} s`,
     },
   ];
 

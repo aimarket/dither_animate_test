@@ -13,7 +13,7 @@ export function verifyToken(token: string): AuthUser | null {
       process.env.JWT_SECRET || 'fallback-secret'
     ) as AuthUser;
     return decoded;
-  } catch (error) {
+  } catch {
     return null;
   }
 }
@@ -34,6 +34,9 @@ export function requireAuth(request: NextRequest): AuthUser {
   if (!user) {
     throw new Error('Unauthorized');
   }
+
+  // Suppress unused variable warning
+  void request;
 
   return user;
 }

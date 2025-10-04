@@ -3,7 +3,6 @@
 import { useFlights } from '@/lib/hooks/useFlights';
 import { MissionControlCard } from '@/components/ui/MissionControlCard';
 import { MonospaceTable } from '@/components/ui/MonospaceTable';
-import { StatusIndicator } from '@/components/ui/StatusIndicator';
 
 export function MissionQueue() {
   const { data: flights } = useFlights();
@@ -21,36 +20,37 @@ export function MissionQueue() {
       key: 'id',
       label: 'LAUNCH ID',
       width: '100px',
-      render: (value: string) => value.slice(0, 8).toUpperCase(),
+      render: (value: unknown) => String(value).slice(0, 8).toUpperCase(),
     },
     {
       key: 'countdown',
       label: 'T-MINUS',
       width: '100px',
-      render: (value: string) => (
-        <span style={{ color: value.startsWith('T-') ? 'var(--accent-orange)' : 'var(--text-secondary)' }}>
-          {value}
+      render: (value: unknown) => (
+        <span style={{ color: String(value).startsWith('T-') ? 'var(--accent-orange)' : 'var(--text-secondary)' }}>
+          {String(value)}
         </span>
       ),
     },
     {
       key: 'rocket_name',
       label: 'ROCKET',
-      render: (_: any, row: any) => row.rocket?.name || 'Unknown',
+      render: (_: unknown, row: typeof queueFlights[number]) => row.rocket?.name || 'Unknown',
     },
     {
       key: 'apogee_altitude_m',
       label: 'TARGET APOGEE',
       width: '130px',
       align: 'right' as const,
-      render: (value: number) => value ? `${value.toFixed(0)}m` : 'N/A',
+      render: (value: unknown) => value ? `${Number(value).toFixed(0)}m` : 'N/A',
     },
     {
       key: 'queueStatus',
       label: 'STATUS',
       width: '180px',
-      render: (value: string, row: any) => {
-        const progress = value === 'PREPPING' ? 75 : 25;
+      render: (value: unknown) => {
+        const statusValue = String(value);
+        const progress = statusValue === 'PREPPING' ? 75 : 25;
         return (
           <div className="flex items-center gap-2">
             <div className="flex-1 h-2 rounded" style={{ backgroundColor: 'rgba(255, 255, 255, 0.1)' }}>
@@ -58,12 +58,12 @@ export function MissionQueue() {
                 className="h-full rounded"
                 style={{
                   width: `${progress}%`,
-                  backgroundColor: value === 'PREPPING' ? 'var(--accent-green)' : 'var(--accent-yellow)',
+                  backgroundColor: statusValue === 'PREPPING' ? 'var(--accent-green)' : 'var(--accent-yellow)',
                   transition: 'width 0.3s',
                 }}
               />
             </div>
-            <span className="text-xs" style={{ color: 'var(--text-secondary)' }}>{value}</span>
+            <span className="text-xs" style={{ color: 'var(--text-secondary)' }}>{statusValue}</span>
           </div>
         );
       },

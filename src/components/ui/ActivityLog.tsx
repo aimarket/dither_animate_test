@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useRef } from 'react';
-import { Circle, AlertCircle, CheckCircle, Info, Zap } from 'lucide-react';
+import { AlertCircle, CheckCircle, Info, Zap } from 'lucide-react';
 
 type EventType = 'info' | 'success' | 'warning' | 'error' | 'activity';
 

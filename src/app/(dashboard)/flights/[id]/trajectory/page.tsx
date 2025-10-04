@@ -5,7 +5,7 @@ import { useFlight } from '@/lib/hooks/useFlights';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/Card';
 import { CardSkeleton } from '@/components/ui/Loading';
 import { Button } from '@/components/ui/Button';
-import { Play, Pause, RotateCcw, ZoomIn, ZoomOut } from 'lucide-react';
+import { Play, Pause, RotateCcw } from 'lucide-react';
 
 interface TelemetryFrame {
   id: string;
@@ -26,7 +26,7 @@ export default function FlightTrajectoryPage({ params }: { params: Promise<{ id:
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentFrame, setCurrentFrame] = useState(0);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const animationRef = useRef<number>();
+  const animationRef = useRef<number | undefined>(undefined);
 
   useEffect(() => {
     fetch(`/api/flights/${id}/telemetry`)

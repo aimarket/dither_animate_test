@@ -41,9 +41,9 @@ export default function FlightsPage() {
       label: 'MISSION ID',
       width: '120px',
       sortable: true,
-      render: (value: string) => (
+      render: (value: unknown) => (
         <span style={{ color: 'var(--text-neon)' }}>
-          {value.slice(0, 8).toUpperCase()}
+          {String(value).slice(0, 8).toUpperCase()}
         </span>
       ),
     },
@@ -56,14 +56,14 @@ export default function FlightsPage() {
       key: 'rocket_name',
       label: 'ROCKET',
       sortable: true,
-      render: (_: any, row: any) => row.rocket?.name || 'Unknown',
+      render: (_: unknown, row: typeof flightData[number]) => row.rocket?.name || 'Unknown',
     },
     {
       key: 'flight_date',
       label: 'DATE',
       width: '120px',
       sortable: true,
-      render: (value: string) => new Date(value).toLocaleDateString(),
+      render: (value: unknown) => new Date(String(value)).toLocaleDateString(),
     },
     {
       key: 'max_altitude_m',
@@ -71,7 +71,7 @@ export default function FlightsPage() {
       width: '100px',
       align: 'right' as const,
       sortable: true,
-      render: (value: number) => value ? `${value.toFixed(0)}m` : '-',
+      render: (value: unknown) => value ? `${Number(value).toFixed(0)}m` : '-',
     },
     {
       key: 'max_velocity_ms',
@@ -79,7 +79,7 @@ export default function FlightsPage() {
       width: '100px',
       align: 'right' as const,
       sortable: true,
-      render: (value: number) => value ? `${value.toFixed(1)}m/s` : '-',
+      render: (value: unknown) => value ? `${Number(value).toFixed(1)}m/s` : '-',
     },
     {
       key: 'max_acceleration_g',
@@ -87,24 +87,25 @@ export default function FlightsPage() {
       width: '90px',
       align: 'right' as const,
       sortable: true,
-      render: (value: number) => value ? `${value.toFixed(1)}G` : '-',
+      render: (value: unknown) => value ? `${Number(value).toFixed(1)}G` : '-',
     },
     {
       key: 'status',
       label: 'STATUS',
       width: '140px',
       sortable: true,
-      render: (value: string) => {
+      render: (value: unknown) => {
         const statusMap: Record<string, 'active' | 'pending' | 'success' | 'failed' | 'idle'> = {
           ACTIVE: 'active',
           PROCESSING: 'pending',
           COMPLETED: 'success',
           FAILED: 'failed',
         };
+        const statusValue = String(value);
         return (
           <StatusIndicator
-            status={statusMap[value] || 'idle'}
-            label={value || 'IDLE'}
+            status={statusMap[statusValue] || 'idle'}
+            label={statusValue || 'IDLE'}
             showDot={true}
           />
         );
@@ -251,7 +252,7 @@ export default function FlightsPage() {
             )}
           </div>
         ) : (
-          <MonospaceTable
+          <MonospaceTable<typeof filteredFlights[number]>
             columns={columns}
             data={filteredFlights}
             onRowClick={(row) => router.push(`/flights/${row.id}`)}

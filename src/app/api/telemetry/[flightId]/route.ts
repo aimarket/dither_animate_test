@@ -5,15 +5,16 @@ import { requireAuth } from '@/lib/auth';
 // GET /api/telemetry/[flightId] - Get telemetry data for a flight
 export async function GET(
   request: NextRequest,
-  { params }: { params: { flightId: string } }
+  { params }: { params: Promise<{ flightId: string }> }
 ) {
   try {
     const user = requireAuth(request);
+    const { flightId } = await params;
 
     // Verify flight ownership
     const flight = await prisma.flight.findFirst({
       where: {
-        id: params.flightId,
+        id: flightId,
         userId: user.userId,
       },
     });
@@ -23,7 +24,7 @@ export async function GET(
     }
 
     const telemetry = await prisma.telemetryFrame.findMany({
-      where: { flightId: params.flightId },
+      where: { flightId },
       orderBy: { relativeTimeMs: 'asc' },
     });
 

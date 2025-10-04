@@ -5,10 +5,11 @@ import jwt from 'jsonwebtoken';
 
 export async function POST(request: NextRequest) {
   try {
-    const { email, password } = await request.json();
+    const body = await request.json();
+    const { email, password: inputPassword } = body;
 
     // Validation
-    if (!email || !password) {
+    if (!email || !inputPassword) {
       return NextResponse.json(
         { error: 'Email and password are required' },
         { status: 400 }
@@ -28,7 +29,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Verify password
-    const isValidPassword = await bcrypt.compare(password, user.password);
+    const isValidPassword = await bcrypt.compare(inputPassword, user.password);
 
     if (!isValidPassword) {
       return NextResponse.json(
@@ -41,10 +42,11 @@ export async function POST(request: NextRequest) {
     const token = jwt.sign(
       { userId: user.id, email: user.email },
       process.env.JWT_SECRET || 'fallback-secret',
-      { expiresIn: process.env.JWT_EXPIRY || '7d' }
+      { expiresIn: '7d' }
     );
 
     // Return user data (excluding password)
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { password: _, ...userWithoutPassword } = user;
 
     // Set httpOnly cookie

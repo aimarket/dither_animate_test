@@ -9,7 +9,7 @@ interface Column<T> {
   width?: string;
   align?: 'left' | 'right' | 'center';
   sortable?: boolean;
-  render?: (value: any, row: T) => React.ReactNode;
+  render?: (value: unknown, row: T) => React.ReactNode;
 }
 
 interface MonospaceTableProps<T> {
@@ -19,7 +19,7 @@ interface MonospaceTableProps<T> {
   className?: string;
 }
 
-export function MonospaceTable<T extends Record<string, any>>({
+export function MonospaceTable<T>({
   columns,
   data,
   onRowClick,
@@ -42,8 +42,8 @@ export function MonospaceTable<T extends Record<string, any>>({
     if (!sortConfig) return data;
 
     return [...data].sort((a, b) => {
-      const aValue = a[sortConfig.key];
-      const bValue = b[sortConfig.key];
+      const aValue = (a as Record<string, unknown>)[sortConfig.key];
+      const bValue = (b as Record<string, unknown>)[sortConfig.key];
 
       if (aValue === bValue) return 0;
       if (aValue === null || aValue === undefined) return 1;
@@ -141,8 +141,8 @@ export function MonospaceTable<T extends Record<string, any>>({
                   }}
                 >
                   {column.render
-                    ? column.render(row[column.key], row)
-                    : row[column.key] ?? '-'}
+                    ? column.render((row as Record<string, unknown>)[column.key], row)
+                    : String((row as Record<string, unknown>)[column.key] ?? '-')}
                 </td>
               ))}
             </tr>

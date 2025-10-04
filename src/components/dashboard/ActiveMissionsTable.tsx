@@ -18,31 +18,32 @@ export function ActiveMissionsTable() {
       label: 'ID',
       width: '80px',
       sortable: true,
-      render: (value: string) => value.slice(0, 8).toUpperCase(),
+      render: (value: unknown) => String(value).slice(0, 8).toUpperCase(),
     },
     {
       key: 'rocket_name',
       label: 'ROCKET',
       sortable: true,
-      render: (_: any, row: any) => row.rocket?.name || 'Unknown',
+      render: (_: unknown, row: typeof recentFlights[number]) => row.rocket?.name || 'Unknown',
     },
     {
       key: 'status',
       label: 'STATUS',
       width: '140px',
       sortable: true,
-      render: (value: string) => {
+      render: (value: unknown) => {
         const statusMap: Record<string, 'active' | 'pending' | 'success' | 'failed' | 'idle'> = {
           ACTIVE: 'active',
           PROCESSING: 'pending',
           COMPLETED: 'success',
           FAILED: 'failed',
         };
+        const statusValue = String(value);
         return (
           <StatusIndicator
-            status={statusMap[value] || 'idle'}
-            label={value}
-            pulse={value === 'ACTIVE'}
+            status={statusMap[statusValue] || 'idle'}
+            label={statusValue}
+            pulse={statusValue === 'ACTIVE'}
             showDot={true}
           />
         );
@@ -54,7 +55,7 @@ export function ActiveMissionsTable() {
       width: '100px',
       align: 'right' as const,
       sortable: true,
-      render: (value: number) => value ? `${value.toFixed(0)}m` : '-',
+      render: (value: unknown) => value ? `${Number(value).toFixed(0)}m` : '-',
     },
     {
       key: 'flight_duration_s',
@@ -62,7 +63,7 @@ export function ActiveMissionsTable() {
       width: '100px',
       align: 'right' as const,
       sortable: true,
-      render: (value: number) => value ? `${value.toFixed(1)}s` : '-',
+      render: (value: unknown) => value ? `${Number(value).toFixed(1)}s` : '-',
     },
     {
       key: 'max_acceleration_g',
@@ -70,7 +71,7 @@ export function ActiveMissionsTable() {
       width: '90px',
       align: 'right' as const,
       sortable: true,
-      render: (value: number) => value ? `${value.toFixed(1)}G` : '-',
+      render: (value: unknown) => value ? `${Number(value).toFixed(1)}G` : '-',
     },
   ];
 

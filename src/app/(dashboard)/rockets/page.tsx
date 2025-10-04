@@ -65,9 +65,9 @@ export default function RocketsPage() {
       label: 'VEHICLE ID',
       width: '120px',
       sortable: true,
-      render: (value: string) => (
+      render: (value: unknown) => (
         <span style={{ color: 'var(--accent-cyan)' }}>
-          {value.slice(0, 8).toUpperCase()}
+          {String(value).slice(0, 8).toUpperCase()}
         </span>
       ),
     },
@@ -75,9 +75,9 @@ export default function RocketsPage() {
       key: 'name',
       label: 'DESIGNATION',
       sortable: true,
-      render: (value: string) => (
+      render: (value: unknown) => (
         <span style={{ color: 'var(--text-primary)', fontWeight: 500 }}>
-          {value}
+          {String(value)}
         </span>
       ),
     },
@@ -87,7 +87,7 @@ export default function RocketsPage() {
       width: '110px',
       align: 'right' as const,
       sortable: true,
-      render: (value: number) => `${value}mm`,
+      render: (value: unknown) => `${Number(value)}mm`,
     },
     {
       key: 'length_mm',
@@ -95,7 +95,7 @@ export default function RocketsPage() {
       width: '110px',
       align: 'right' as const,
       sortable: true,
-      render: (value: number) => `${value}mm`,
+      render: (value: unknown) => `${Number(value)}mm`,
     },
     {
       key: 'dry_mass_g',
@@ -103,7 +103,7 @@ export default function RocketsPage() {
       width: '110px',
       align: 'right' as const,
       sortable: true,
-      render: (value: number) => `${value}g`,
+      render: (value: unknown) => `${Number(value)}g`,
     },
     {
       key: 'flight_count',
@@ -111,9 +111,9 @@ export default function RocketsPage() {
       width: '90px',
       align: 'right' as const,
       sortable: true,
-      render: (value: number) => (
-        <span style={{ color: value > 0 ? 'var(--accent-green)' : 'var(--text-secondary)' }}>
-          {value}
+      render: (value: unknown) => (
+        <span style={{ color: Number(value) > 0 ? 'var(--accent-green)' : 'var(--text-secondary)' }}>
+          {String(value)}
         </span>
       ),
     },
@@ -121,7 +121,7 @@ export default function RocketsPage() {
       key: 'status',
       label: 'STATUS',
       width: '140px',
-      render: (_: any, row: RocketType) => {
+      render: (_: unknown, row: RocketType) => {
         const status = row.flight_count > 0 ? 'active' : 'idle';
         const label = row.flight_count > 0 ? 'OPERATIONAL' : 'STANDBY';
         return <StatusIndicator status={status} label={label} showDot={true} />;

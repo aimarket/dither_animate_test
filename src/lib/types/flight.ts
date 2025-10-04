@@ -2,6 +2,7 @@ export interface Flight {
   id: string;
   user_id: string;
   rocket_id?: string;
+  rocket?: Rocket;
   flight_name: string;
   flight_date: string;
   location?: string;
@@ -9,12 +10,14 @@ export interface Flight {
   motor_manufacturer?: string;
   recovery_type?: 'single' | 'dual';
   notes?: string;
+  status?: string;
 
   // Computed metrics
   max_altitude_m?: number;
   max_velocity_ms?: number;
   max_acceleration_g?: number;
   apogee_time_s?: number;
+  apogee_altitude_m?: number;
   flight_duration_s?: number;
   rail_departure_velocity_ms?: number;
 
