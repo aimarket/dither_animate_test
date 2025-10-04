@@ -2,13 +2,8 @@
 
 import { useRef, useEffect } from 'react';
 
-interface ExactThreejsGlobeProps {
-  enableDither: boolean;
-}
-
-export default function ExactThreejsGlobe({ enableDither }: ExactThreejsGlobeProps) {
+export default function ExactThreejsGlobe() {
   const iframeRef = useRef<HTMLIFrameElement>(null);
-  const containerClass = enableDither ? "dither" : "";
 
   useEffect(() => {
     // The iframe will load the exact original implementation
@@ -18,7 +13,7 @@ export default function ExactThreejsGlobe({ enableDither }: ExactThreejsGlobePro
   }, []);
 
   return (
-    <div className={`h-screen w-screen ${containerClass}`}>
+    <div className="h-screen w-screen">
       <iframe
         ref={iframeRef}
         className="w-full h-full border-0"

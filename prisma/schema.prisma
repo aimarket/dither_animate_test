@@ -1,0 +1,147 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  username  String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  rockets Rocket[]
+  flights Flight[]
+}
+
+model Rocket {
+  id          String   @id @default(uuid())
+  userId      String
+  name        String
+  diameterMm  Float
+  lengthMm    Float
+  dryMassG    Float
+  description String?
+  createdAt   DateTime @default(now())
+
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  flights Flight[]
+
+  @@index([userId])
+}
+
+model Flight {
+  id          String   @id @default(uuid())
+  userId      String
+  rocketId    String?
+  flightName  String
+  flightDate  DateTime
+  location    String?
+
+  motorDesignation   String?
+  motorManufacturer  String?
+  recoveryType       String?
+  notes              String?
+
+  // Computed metrics
+  maxAltitudeM        Float?
+  maxVelocityMs       Float?
+  maxAccelerationG    Float?
+  apogeeTimeS         Float?
+  flightDurationS     Float?
+  railDepartureVelMs  Float?
+
+  // Metadata
+  rawFileSizeBytes      Int?
+  sampleRateHz          Int?
+  telemetryStartTime    DateTime?
+  telemetryEndTime      DateTime?
+
+  createdAt   DateTime @default(now())
+  processedAt DateTime?
+
+  user      User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  rocket    Rocket?           @relation(fields: [rocketId], references: [id], onDelete: SetNull)
+  telemetry TelemetryFrame[]
+
+  @@index([userId, flightDate])
+  @@index([rocketId])
+}
+
+model TelemetryFrame {
+  id             String   @id @default(uuid())
+  flightId       String
+  timestamp      DateTime
+  relativeTimeMs Int
+
+  // IMU
+  accelXG  Float?
+  accelYG  Float?
+  accelZG  Float?
+  gyroXDps Float?
+  gyroYDps Float?
+  gyroZDps Float?
+
+  // Magnetometer
+  magXUt Float?
+  magYUt Float?
+  magZUt Float?
+
+  // Barometer
+  pressurePa   Float?
+  temperatureC Float?
+
+  // GPS
+  gpsLatitude  Float?
+  gpsLongitude Float?
+  gpsAltitudeM Float?
+  gpsSpeedMs   Float?
+  gpsSatellites Int?
+
+  // Computed
+  altitudeAglM       Float?
+  verticalVelocityMs Float?
+  orientationW       Float?
+  orientationX       Float?
+  orientationY       Float?
+  orientationZ       Float?
+
+  // Status
+  pyroContinuity1 Boolean?
+  pyroContinuity2 Boolean?
+  batteryVoltageV Float?
+  flightState     String?
+
+  flight Flight @relation(fields: [flightId], references: [id], onDelete: Cascade)
+
+  @@index([flightId, relativeTimeMs])
+}
+
+model Motor {
+  id             String   @id @default(uuid())
+  manufacturer   String
+  designation    String
+  type           String   // "single-use" or "reloadable"
+  impulseClass   String   // L, M, N, O, etc.
+  totalImpulseNs Float
+  avgThrustN     Float
+  maxThrustN     Float
+  burnTimeS      Float
+  propellantMassG Float
+  totalMassG     Float
+  diameter       Int      // mm
+  length         Int      // mm
+
+  createdAt      DateTime @default(now())
+
+  @@unique([manufacturer, designation])
+  @@index([impulseClass])
+}
