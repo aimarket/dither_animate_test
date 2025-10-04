@@ -6,13 +6,18 @@ This is a **DEMO SITE** with **hardcoded mock data** - just deploy and it works!
 
 ### Step 1: Deploy to Netlify
 
-1. Push your code to GitHub
+1. Push your code to GitHub (including the new `netlify.toml` file)
 2. Connect to Netlify
-3. Add ONE environment variable:
-   - `JWT_SECRET` = `demo-secret-123` (or anything)
-4. Deploy!
+3. Build settings (should auto-detect from netlify.toml):
+   - Build command: Uses bun (installs automatically)
+   - Publish directory: `.next`
+4. Add environment variable:
+   - `JWT_SECRET` = `demo-secret-123` (or any random string)
+5. Deploy!
 
 **That's it!** No database setup needed - all data is hardcoded in the repo.
+
+**Important:** The `netlify.toml` file configures Netlify to properly handle Next.js API routes.
 
 ### Step 2: Share with Friends
 
