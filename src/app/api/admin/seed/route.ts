@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import bcrypt from 'bcryptjs';
 
@@ -6,17 +6,9 @@ import bcrypt from 'bcryptjs';
 // Only use this ONCE after initial deployment
 // Consider removing or protecting this endpoint after seeding
 
-export async function POST(request: NextRequest) {
+export async function POST() {
   try {
-    // Optional: Add a secret key protection
-    const { secret } = await request.json();
-
-    if (secret !== process.env.SEED_SECRET) {
-      return NextResponse.json(
-        { error: 'Unauthorized' },
-        { status: 401 }
-      );
-    }
+    // No authentication needed - this is a demo site
 
     console.log('🌱 Starting database seed...');
 

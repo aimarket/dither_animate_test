@@ -1,47 +1,45 @@
-# Deployment Instructions
+# Deployment Instructions - DEMO SITE
 
-## Netlify-Specific Instructions
+## 🚀 Quick Deploy for Netlify (or any platform)
 
-For Netlify deployments, use **Option 3** below (API endpoint method) as it's the easiest.
+This is a **DEMO SITE** - no security needed! Just get it up and running so people can see the UI.
 
-## Important: Seeding Mock Data for Production
+### Step 1: Deploy
 
-The "Continue as Test User" button on the login page requires mock data to be present in your production database. Without this data, the demo won't work properly.
+1. Push your code to GitHub
+2. Connect to Netlify (or Vercel/Railway)
+3. Add these environment variables:
+   - `DATABASE_URL` - Your database connection (use a free PostgreSQL from Neon, Supabase, or Railway)
+   - `JWT_SECRET` - anything (e.g., `demo-secret-123`)
 
-### Step 1: Deploy Your Application
+### Step 2: Seed the Database (ONE TIME)
 
-Deploy your app to your hosting platform (Vercel, Railway, etc.)
+After deployment, just visit this URL in your browser:
 
-### Step 2: Set Up Environment Variables
+```
+https://your-app.netlify.app/api/admin/seed
+```
 
-Make sure your production environment has:
-- `DATABASE_URL` - Your production database connection string
-- `JWT_SECRET` - A secure random string for JWT signing
-- `JWT_EXPIRY` - Token expiration time (e.g., "7d")
+That's it! The database is now seeded with all the demo data.
 
-### Step 3: Seed the Production Database
+### Step 3: Share with Friends
 
-#### Option A: Via API Endpoint (EASIEST - Works for Netlify!)
+Tell them to:
+1. Go to your site
+2. Click "Continue as Test User" button
+3. Explore the UI with all the mock data!
 
-1. **Add a SEED_SECRET environment variable** in your Netlify dashboard:
-   - Go to Site settings → Environment variables
-   - Add `SEED_SECRET` with a random value (e.g., `my-secret-seed-key-123`)
+## What Gets Seeded
 
-2. **After deployment, call the seed endpoint** using curl or Postman:
-   ```bash
-   curl -X POST https://your-app.netlify.app/api/admin/seed \
-     -H "Content-Type: application/json" \
-     -d '{"secret": "my-secret-seed-key-123"}'
-   ```
+- **Test User**: test@example.com / password123
+- **5 Rockets**: Alpha Strike, Beta Racer, Gamma Explorer, Delta Prototype, Epsilon Heavy
+- **6 Flights**: Complete flight records with telemetry
+- **8 Motors**: Various rocket motors database
+- **Telemetry Data**: Real-looking flight data for 3 flights
 
-3. **IMPORTANT: Delete or protect the endpoint** after seeding:
-   - Either delete `src/app/api/admin/seed/route.ts`
-   - Or add stronger authentication
-   - Redeploy without the file
+---
 
-#### Option B: Local Connection to Production Database
-
-### Step 3: Seed the Production Database (Alternative Methods)
+## Alternative Methods (if you want to use CLI)
 
 After deployment, you need to run the seed script **once** to populate your database with:
 - Test user (test@example.com / password123)
